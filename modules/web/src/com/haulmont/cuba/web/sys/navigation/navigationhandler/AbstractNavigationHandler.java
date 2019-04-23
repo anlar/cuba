@@ -17,12 +17,17 @@
 package com.haulmont.cuba.web.sys.navigation.navigationhandler;
 
 import com.haulmont.cuba.core.global.AccessDeniedException;
+import com.haulmont.cuba.core.global.BeanLocator;
+import com.haulmont.cuba.core.global.Configuration;
 import com.haulmont.cuba.core.global.Security;
 import com.haulmont.cuba.gui.config.WindowInfo;
 import com.haulmont.cuba.gui.navigation.NavigationState;
+import com.haulmont.cuba.gui.screen.OpenMode;
 import com.haulmont.cuba.gui.screen.Screen;
 import com.haulmont.cuba.security.entity.PermissionType;
 import com.haulmont.cuba.web.AppUI;
+import com.haulmont.cuba.web.WebConfig;
+import com.haulmont.cuba.web.sys.RedirectHandler;
 import com.haulmont.cuba.web.sys.navigation.UrlChangeHandler;
 import com.haulmont.cuba.web.sys.navigation.accessfilter.NavigationFilter;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +55,29 @@ public abstract class AbstractNavigationHandler implements NavigationHandler {
     protected boolean isRootRoute(WindowInfo windowInfo) {
         return windowInfo != null
                 && windowInfo.getRouteDefinition().isRoot();
+    }
+
+    protected boolean shouldRedirect(WindowInfo windowInfo, Security security, AppUI ui) {
+        if (ui.hasAuthenticatedSession()) {
+            return false;
+        }
+
+        return !security.isScreenPermitted(windowInfo.getId());
+    }
+
+    protected void redirect(NavigationState navigationState, AppUI ui, BeanLocator beanLocator) {
+        String loginScreenId = beanLocator.get(Configuration.class)
+                .getConfig(WebConfig.class)
+                .getLoginScreenId();
+
+        Screen loginScreen = ui.getScreens().create(loginScreenId, OpenMode.ROOT);
+
+        loginScreen.show();
+
+        RedirectHandler redirectHandler = beanLocator.getPrototype(RedirectHandler.NAME, ui);
+        redirectHandler.schedule(navigationState);
+
+        ui.getUrlChangeHandler().setRedirectHandler(redirectHandler);
     }
 
     protected boolean isNotPermittedToNavigate(NavigationState requestedState, WindowInfo windowInfo,

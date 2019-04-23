@@ -149,7 +149,7 @@ public class MismatchedUserSessionHandler extends AbstractExceptionHandler {
 
         closeAllDialogs(currentUi);
 
-        currentUi.setCurrentSession(app.getConnection().getSession());
+        currentUi.setUserSession(app.getConnection().getSession());
 
         refreshPage();
 

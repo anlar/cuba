@@ -140,14 +140,14 @@ public class AppUI extends CubaUI implements ErrorHandler, EnhancedUI, UiExcepti
     protected UrlRouting urlRouting;
     protected History history;
 
-    protected UserSession currentSession;
+    protected UserSession userSession;
 
-    public UserSession getCurrentSession() {
-        return currentSession;
+    public UserSession getUserSession() {
+        return userSession;
     }
 
-    public void setCurrentSession(UserSession currentSession) {
-        this.currentSession = currentSession;
+    public void setUserSession(UserSession userSession) {
+        this.userSession = userSession;
     }
 
     public AppUI() {
@@ -331,7 +331,7 @@ public class AppUI extends CubaUI implements ErrorHandler, EnhancedUI, UiExcepti
             }
 
             if (connection != null) {
-                setCurrentSession(connection.getSession());
+                setUserSession(connection.getSession());
             }
 
             setupUI();
@@ -416,8 +416,8 @@ public class AppUI extends CubaUI implements ErrorHandler, EnhancedUI, UiExcepti
     }
 
     public boolean hasAuthenticatedSession() {
-        return currentSession instanceof ClientUserSession
-                && ((ClientUserSession) currentSession).isAuthenticated();
+        return userSession instanceof ClientUserSession
+                && ((ClientUserSession) userSession).isAuthenticated();
     }
 
     protected void publishAppInitializedEvent(App app) {
@@ -499,8 +499,8 @@ public class AppUI extends CubaUI implements ErrorHandler, EnhancedUI, UiExcepti
                     userSessionService.getUserSession(session.getId());
 
                     if (hasAuthenticatedSession()
-                            && !Objects.equals(currentSession, session)) {
-                        setCurrentSession(session);
+                            && !Objects.equals(userSession, session)) {
+                        setUserSession(session);
                     }
                 }
             } catch (Exception e) {

@@ -92,17 +92,17 @@ public class DefaultApp extends App {
 
             AppUI currentUi = AppUI.getCurrent();
             if (currentUi != null) {
-                UserSession oldUserSession = currentUi.getCurrentSession();
+                UserSession oldUserSession = currentUi.getUserSession();
 
-                currentUi.setCurrentSession(connection.getSession());
+                currentUi.setUserSession(connection.getSession());
 
                 // "logout" all UIs with the same UserSession
                 getAppUIs()
                         .stream()
                         .filter(ui -> ui.hasAuthenticatedSession()
-                                && Objects.equals(ui.getCurrentSession(), oldUserSession))
+                                && Objects.equals(ui.getUserSession(), oldUserSession))
                         .collect(Collectors.toList())
-                        .forEach(ui -> ui.setCurrentSession(userSession));
+                        .forEach(ui -> ui.setUserSession(userSession));
             }
 
             if (connection.isAuthenticated()) {
@@ -148,7 +148,7 @@ public class DefaultApp extends App {
         getAppUIs()
                 .stream()
                 .filter(ui -> ui.hasAuthenticatedSession()
-                        && !Objects.equals(ui.getCurrentSession(), userSession))
+                        && !Objects.equals(ui.getUserSession(), userSession))
                 .forEach(this::notifyMismatchedSessionUi);
     }
 
@@ -227,7 +227,7 @@ public class DefaultApp extends App {
 
         getAppUIs()
                 .stream()
-                .filter(ui -> Objects.equals(userSessionSource.getUserSession(), ui.getCurrentSession()))
+                .filter(ui -> Objects.equals(userSessionSource.getUserSession(), ui.getUserSession()))
                 .collect(Collectors.toList())
                 .forEach(ui -> {
                     if (currentUi != ui) {

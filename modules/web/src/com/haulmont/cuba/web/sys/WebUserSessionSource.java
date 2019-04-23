@@ -75,7 +75,11 @@ public class WebUserSessionSource extends AbstractUserSessionSource {
     public UserSession getUserSession() {
         UserSession session;
         if (App.isBound()) {
-            session = App.getInstance().getConnection().getSession();
+            session = AppUI.getCurrent().getUserSession();
+
+            if (session == null) {
+                session = App.getInstance().getConnection().getSession();
+            }
         } else {
             SecurityContext securityContext = AppContext.getSecurityContextNN();
             if (securityContext.getSession() != null) {
@@ -115,15 +119,15 @@ public class WebUserSessionSource extends AbstractUserSessionSource {
         return userSession;
     }
 
-    protected void checkUiSession(UserSession appSession) {
+    protected void checkUiSession(UserSession session) {
         boolean appAuthenticated = App.getInstance().getConnection().isAuthenticated();
         AppUI ui = AppUI.getCurrent();
-        UserSession uiSession = ui.getCurrentSession();
+        UserSession uiSession = ui.getUserSession();
 
         // two authenticated sessions exist
         if (appAuthenticated
                 && ui.hasAuthenticatedSession()
-                && !Objects.equals(appSession, uiSession)) {
+                && !Objects.equals(session, uiSession)) {
             throw new MismatchedUserSessionException(uiSession.getId());
         }
 

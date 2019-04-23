@@ -16,7 +16,10 @@
 
 package com.haulmont.cuba.web.app.main;
 
-import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.core.global.Configuration;
+import com.haulmont.cuba.core.global.Events;
+import com.haulmont.cuba.core.global.FtsConfigHelper;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Route;
 import com.haulmont.cuba.gui.ScreenTools;
 import com.haulmont.cuba.gui.Screens;
@@ -33,7 +36,7 @@ import com.haulmont.cuba.gui.screen.Subscribe;
 import com.haulmont.cuba.gui.screen.UiController;
 import com.haulmont.cuba.gui.screen.UiControllerUtils;
 import com.haulmont.cuba.gui.screen.UiDescriptor;
-import com.haulmont.cuba.web.App;
+import com.haulmont.cuba.web.AppUI;
 import com.haulmont.cuba.web.WebConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.event.EventListener;
@@ -59,7 +62,6 @@ public class MainScreen extends Screen implements Window.HasWorkArea, Window.Has
         initLogoImage();
         initFtsField();
         initUserIndicator();
-        initLogoutButton();
         initTitleBar();
         initMenu();
         initLayoutAnalyzerContextMenu();
@@ -68,16 +70,8 @@ public class MainScreen extends Screen implements Window.HasWorkArea, Window.Has
     protected void initUserIndicator() {
         UserIndicator userIndicator = getUserIndicator();
         if (userIndicator != null) {
-            boolean authenticated = App.getInstance().getConnection().isAuthenticated();
+            boolean authenticated = AppUI.getCurrent().hasAuthenticatedSession();
             userIndicator.setVisible(authenticated);
-        }
-    }
-
-    protected void initLogoutButton() {
-        LogoutButton logoutButton = getLogoutButton();
-        if (logoutButton != null) {
-            boolean authenticated = App.getInstance().getConnection().isAuthenticated();
-            logoutButton.setVisible(authenticated);
         }
     }
 

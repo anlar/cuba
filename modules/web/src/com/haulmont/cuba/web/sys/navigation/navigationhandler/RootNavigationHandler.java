@@ -16,6 +16,7 @@
 
 package com.haulmont.cuba.web.sys.navigation.navigationhandler;
 
+import com.haulmont.cuba.core.global.BeanLocator;
 import com.haulmont.cuba.core.global.Security;
 import com.haulmont.cuba.gui.config.WindowConfig;
 import com.haulmont.cuba.gui.config.WindowInfo;
@@ -49,6 +50,8 @@ public class RootNavigationHandler extends AbstractNavigationHandler implements 
     protected WebConfig webConfig;
     @Inject
     protected Security security;
+    @Inject
+    protected BeanLocator beanLocator;
 
     @Override
     public boolean doHandle(NavigationState requestedState, AppUI ui) {
@@ -64,6 +67,11 @@ public class RootNavigationHandler extends AbstractNavigationHandler implements 
         if (windowInfo == null) {
             log.info("No screen found registered for route '{}'", requestedState.getRoot());
             revertNavigationState(ui);
+            return true;
+        }
+
+        if (shouldRedirect(windowInfo, security, ui)) {
+            redirect(requestedState, ui, beanLocator);
             return true;
         }
 

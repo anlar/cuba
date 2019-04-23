@@ -45,7 +45,7 @@ public class WebUserActionsButton extends WebAbstractComponent<CubaMenuBar>
 
     @Override
     public void afterPropertiesSet() {
-        boolean authenticated = App.getInstance().getConnection().isAuthenticated();
+        boolean authenticated = AppUI.getCurrent().hasAuthenticatedSession();
 
         IconResolver iconResolver = beanLocator.get(IconResolver.class);
         Icons icons = beanLocator.get(Icons.class);

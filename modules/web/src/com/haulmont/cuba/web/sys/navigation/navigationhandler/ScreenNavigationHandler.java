@@ -70,11 +70,17 @@ public class ScreenNavigationHandler extends AbstractNavigationHandler implement
     protected DataManager dataManager;
     @Inject
     protected Metadata metadata;
+    @Inject
+    protected BeanLocator beanLocator;
 
     @Override
     public boolean doHandle(NavigationState requestedState, AppUI ui) {
-        if (!isScreenChanged(requestedState, ui)) {
+        if (isEmptyState(requestedState)) {
             return false;
+        }
+
+        if (!isScreenChanged(requestedState, ui)) {
+            return fullyHandled(requestedState);
         }
 
         String requestedRoute = requestedState.getNestedRoute();
@@ -103,7 +109,8 @@ public class ScreenNavigationHandler extends AbstractNavigationHandler implement
                 .collect(Collectors.toList());
 
         for (Pair<String, WindowInfo> entry : routeWindowInfos) {
-            if (entry.getSecond() == null) {
+            WindowInfo routeWindowInfo = entry.getSecond();
+            if (routeWindowInfo == null) {
                 log.info("No registered screen found for route: '{}'", entry.getFirst());
                 revertNavigationState(ui);
 
@@ -112,8 +119,13 @@ public class ScreenNavigationHandler extends AbstractNavigationHandler implement
                 return true;
             }
 
-            if (isRootRoute(entry.getSecond())) {
-                log.info("Unable navigate to '{}' as nested screen", entry.getSecond().getId());
+            if (shouldRedirect(routeWindowInfo, security, ui)) {
+                redirect(requestedState, ui, beanLocator);
+                return true;
+            }
+
+            if (isRootRoute(routeWindowInfo)) {
+                log.info("Unable navigate to '{}' as nested screen", routeWindowInfo.getId());
                 revertNavigationState(ui);
 
                 return true;
