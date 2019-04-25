@@ -59,6 +59,9 @@ public class DynamicAttributeCustomFieldGenerator implements FieldGroup.CustomFi
             return null;
         }
 
+        DynamicAttributesGuiTools dynamicTools = AppBeans.get(DynamicAttributesGuiTools.class);
+        listEditor.setValidator(dynamicTools.createValidator(categoryAttribute));
+
         listEditor.setEntityJoinClause(categoryAttribute.getJoinClause());
         listEditor.setEntityWhereClause(categoryAttribute.getWhereClause());
 

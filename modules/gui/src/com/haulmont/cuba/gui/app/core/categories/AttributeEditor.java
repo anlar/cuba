@@ -81,9 +81,13 @@ public class AttributeEditor extends AbstractEditor<CategoryAttribute> {
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.STRING, "rowsCount");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.STRING, "isCollection");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "defaultDouble");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "minDouble");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "maxDouble");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "width");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "isCollection");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "defaultInt");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "minInt");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "maxInt");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "width");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "isCollection");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DATE, "defaultDate");
@@ -556,6 +560,28 @@ public class AttributeEditor extends AbstractEditor<CategoryAttribute> {
 
     @Override
     public void postValidate(ValidationErrors errors) {
+        if (attribute.getDataType() == PropertyType.INTEGER || attribute.getDataType() == PropertyType.DOUBLE) {
+            if (attribute.getMinValue() != null &&
+                    attribute.getMaxValue() != null &&
+                    compareNumbers(attribute.getDataType(), attribute.getMinValue(), attribute.getMaxValue()) > 0) {
+
+                errors.add(getMessage("maxGreaterThanMin"));
+
+            } else if (attribute.getDefaultValue() != null) {
+                if (attribute.getMinValue() != null &&
+                        compareNumbers(attribute.getDataType(), attribute.getMinValue(), (Number) attribute.getDefaultValue()) > 0) {
+
+                    errors.add(getMessage("defaultLessThanMin"));
+                }
+
+                if (attribute.getMaxValue() != null &&
+                        compareNumbers(attribute.getDataType(), attribute.getMaxValue(), (Number) attribute.getDefaultValue()) < 0) {
+
+                    errors.add(getMessage("defaultGreaterThanMax"));
+                }
+            }
+        }
+
         @SuppressWarnings("unchecked")
         CollectionDatasource<CategoryAttribute, UUID> parent
                 = (CollectionDatasource<CategoryAttribute, UUID>) ((DatasourceImplementation) attributeDs).getParent();
@@ -662,5 +688,15 @@ public class AttributeEditor extends AbstractEditor<CategoryAttribute> {
         query = query.replace("{E}", entityAlias);
 
         return JpqlSuggestionFactory.requestHint(query, queryPosition, sender.getAutoCompleteSupport(), senderCursorPosition);
+    }
+
+    private int compareNumbers(PropertyType type, Number first, Number second) {
+        if (type == PropertyType.INTEGER) {
+            return Integer.compare((Integer) first, (Integer) second);
+        } else if (type == PropertyType.DOUBLE) {
+            return Double.compare((Double) first, (Double) second);
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 }

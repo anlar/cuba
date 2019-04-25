@@ -19,58 +19,52 @@ package com.haulmont.cuba.gui.components.validators;
 import com.haulmont.chile.core.datatypes.Datatype;
 import com.haulmont.chile.core.datatypes.Datatypes;
 import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.UserSessionSource;
-import com.haulmont.cuba.gui.components.Field;
-import com.haulmont.cuba.gui.components.ValidationException;
 import org.dom4j.Element;
 
 import java.text.ParseException;
-import java.util.Objects;
 
-public class IntegerValidator implements Field.Validator {
-
-    protected String message;
-    protected String messagesPack;
-    protected String onlyPositive;
-    protected Messages messages = AppBeans.get(Messages.NAME);
+public class IntegerValidator extends NumberValidator {
 
     public IntegerValidator(Element element, String messagesPack) {
-        message = element.attributeValue("message");
-        onlyPositive = element.attributeValue("onlyPositive");
-        this.messagesPack = messagesPack;
+        super(element, messagesPack);
     }
 
     public IntegerValidator(String message) {
-        this.message = message;
+        super(message);
     }
 
     public IntegerValidator() {
-        this.message = messages.getMainMessage("validation.invalidNumber");
     }
 
-    private boolean checkIntegerOnPositive(Integer value) {
-        return !Objects.equals("true", onlyPositive) || value >= 0;
+    public IntegerValidator(Integer min, Integer max) {
+        super(min, max);
     }
 
     @Override
-    public void validate(Object value) throws ValidationException {
-        boolean result;
-        if (value instanceof String) {
+    protected Number parse(Object value) throws UnsupportedOperationException {
+        if (value instanceof Integer) {
+            return (Number) value;
+        } else if (value instanceof String) {
             try {
                 Datatype<Integer> datatype = Datatypes.getNN(Integer.class);
                 UserSessionSource sessionSource = AppBeans.get(UserSessionSource.NAME);
-                Integer num = datatype.parse((String) value, sessionSource.getLocale());
-                result = checkIntegerOnPositive(num);
+                return datatype.parse((String) value, sessionSource.getLocale());
             } catch (ParseException e) {
-                result = false;
+                throw new UnsupportedOperationException(e);
             }
         } else {
-            result = value instanceof Integer && checkIntegerOnPositive((Integer) value);
+            throw new UnsupportedOperationException();
         }
-        if (!result) {
-            String msg = message != null ? messages.getTools().loadString(messagesPack, message) : "Invalid value '%s'";
-            throw new ValidationException(String.format(msg, value));
-        }
+    }
+
+    @Override
+    protected boolean checkOnPositive(Number value) {
+        return (Integer) value >= 0;
+    }
+
+    @Override
+    protected int compareNumbers(Number first, Number second) {
+        return Integer.compare((Integer) first, (Integer) second);
     }
 }

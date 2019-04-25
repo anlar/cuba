@@ -139,6 +139,9 @@ public interface ListEditor extends Field, Component.Focusable {
 
     ItemType getItemType();
 
+    void setValidator(Field.Validator validator);
+    Field.Validator getValidator();
+
     /**
      * Listener that will be notified when editor window is closed.
      */

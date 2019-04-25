@@ -28,6 +28,7 @@ import com.haulmont.cuba.core.global.View;
 import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.filter.FilterHelper;
+import com.haulmont.cuba.gui.components.validators.IntegerValidator;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.DsBuilder;
 import com.haulmont.cuba.gui.dynamicattributes.DynamicAttributesGuiTools;
@@ -91,6 +92,9 @@ public class ListEditorPopupWindow extends AbstractWindow implements ListEditorW
 
     @WindowParam
     protected TimeZone timeZone;
+
+    @WindowParam
+    protected Field.Validator validator;
 
     @Inject
     protected Metadata metadata;
@@ -199,6 +203,10 @@ public class ListEditorPopupWindow extends AbstractWindow implements ListEditorW
                     throw new IllegalStateException("Cannot process the itemType " + itemType);
             }
 
+            if (validator != null) {
+                componentForAdding.addValidator(validator);
+            }
+
             addItemLayout.add(componentForAdding);
             addItemLayout.expand(componentForAdding);
 
@@ -224,8 +232,10 @@ public class ListEditorPopupWindow extends AbstractWindow implements ListEditorW
 
     protected void _addValue(Field componentForAdding) {
         Object value = componentForAdding.getValue();
-        if (value != null) {
+
+        if (value != null && validate(Collections.singletonList(componentForAdding))) {
             componentForAdding.setValue(null);
+
             if (!valueExists(value)) {
                 addValueToLayout(value, ListEditorHelper.getValueCaption(value, itemType, timeZone));
             }

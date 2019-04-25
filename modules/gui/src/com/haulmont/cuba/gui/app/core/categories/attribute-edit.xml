@@ -65,6 +65,11 @@
                         <field id="defaultBoolean" custom="true" width="100%"/>
                         <field id="defaultDate" width="100%"/>
                         <field id="defaultDateIsCurrent" width="100%"/>
+
+                        <field id="minInt" width="100%"/>
+                        <field id="minDouble" width="100%"/>
+                        <field id="maxInt" width="100%"/>
+                        <field id="maxDouble" width="100%"/>
                     </column>
                 </fieldGroup>
             </tab>

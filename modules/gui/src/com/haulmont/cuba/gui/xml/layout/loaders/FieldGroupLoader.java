@@ -30,12 +30,11 @@ import com.haulmont.cuba.core.global.MetadataTools;
 import com.haulmont.cuba.gui.ComponentsHelper;
 import com.haulmont.cuba.gui.GuiDevelopmentException;
 import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.components.FieldGroup.CustomFieldGenerator;
 import com.haulmont.cuba.gui.components.FieldGroup.FieldCaptionAlignment;
+import com.haulmont.cuba.gui.components.validators.IntegerValidator;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.data.DsContext;
-import com.haulmont.cuba.gui.dynamicattributes.DynamicAttributeCustomFieldGenerator;
 import com.haulmont.cuba.gui.dynamicattributes.DynamicAttributesGuiTools;
 import com.haulmont.cuba.gui.xml.DeclarativeFieldGenerator;
 import com.haulmont.cuba.gui.xml.layout.ComponentLoader;
@@ -212,6 +211,13 @@ public class FieldGroupLoader extends AbstractComponentLoader<FieldGroup> {
                             "validation.required.defaultMsg",
                             attribute.getLocaleName()));
                     loadWidth(field, attribute.getWidth());
+
+                    if (!attribute.getIsCollection()) {
+                        Field.Validator validator = dynamicAttributesGuiTools.createValidator(attribute);
+                        if (validator != null) {
+                            field.addValidator(validator);
+                        }
+                    }
 
                     fields.add(field);
                 }

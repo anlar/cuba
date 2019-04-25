@@ -86,4 +86,7 @@ public interface ListEditorDelegate {
 
     void setTimeZone(TimeZone timeZone);
     TimeZone getTimeZone();
+
+    void setValidator(Field.Validator validator);
+    Field.Validator getValidator();
 }

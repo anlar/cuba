@@ -66,6 +66,7 @@ public class ListEditorDelegateImpl implements ListEditorDelegate {
     protected String entityWhereClause;
     protected Class<? extends Enum> enumClass;
     protected TimeZone timeZone;
+    protected Field.Validator validator;
 
     protected TextField displayValuesField;
     protected HBoxLayout layout;
@@ -109,6 +110,7 @@ public class ListEditorDelegateImpl implements ListEditorDelegate {
                 params.put("values", getValue());
                 params.put("editable", editable);
                 params.put("timeZone", timeZone);
+                params.put("validator", validator);
 
                 if (editorParamsSupplier != null) {
                     Map<String, Object> additionalParams = getEditorParamsSupplier().get();
@@ -371,5 +373,15 @@ public class ListEditorDelegateImpl implements ListEditorDelegate {
     @Override
     public TimeZone getTimeZone() {
         return timeZone;
+    }
+
+    @Override
+    public void setValidator(Field.Validator validator) {
+        this.validator = validator;
+    }
+
+    @Override
+    public Field.Validator getValidator() {
+        return validator;
     }
 }

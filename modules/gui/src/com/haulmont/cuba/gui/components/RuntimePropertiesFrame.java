@@ -28,10 +28,7 @@ import com.haulmont.cuba.core.global.DevelopmentException;
 import com.haulmont.cuba.core.global.Security;
 import com.haulmont.cuba.gui.AppConfig;
 import com.haulmont.cuba.gui.WindowParam;
-import com.haulmont.cuba.gui.components.validators.DateValidator;
-import com.haulmont.cuba.gui.components.validators.DoubleValidator;
-import com.haulmont.cuba.gui.components.validators.IntegerValidator;
-import com.haulmont.cuba.gui.components.validators.LongValidator;
+import com.haulmont.cuba.gui.components.validators.*;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.data.RuntimePropsDatasource;
@@ -259,13 +256,21 @@ public class RuntimePropertiesFrame extends AbstractFrame {
         if (property.getRange().isDatatype()) {
             Class type = property.getRange().asDatatype().getJavaClass();
 
+            // todo: exclude for collections
             if (type.equals(Integer.class)) {
-                validator = new IntegerValidator(messages.getMainMessage("validation.invalidNumber"));
+                validator = new IntegerValidator(
+                        ((DynamicAttributesMetaProperty) property).getAttribute().getMinInt(),
+                        ((DynamicAttributesMetaProperty) property).getAttribute().getMaxInt());
 
             } else if (type.equals(Long.class)) {
                 validator = new LongValidator(messages.getMainMessage("validation.invalidNumber"));
 
-            } else if (type.equals(Double.class) || type.equals(BigDecimal.class)) {
+            } else if (type.equals(Double.class)) {
+                validator = new DoubleValidator(
+                        ((DynamicAttributesMetaProperty) property).getAttribute().getMinDouble(),
+                        ((DynamicAttributesMetaProperty) property).getAttribute().getMaxDouble());
+
+            } else if (type.equals(BigDecimal.class)) {
                 validator = new DoubleValidator(messages.getMainMessage("validation.invalidNumber"));
 
             } else if (type.equals(java.sql.Date.class)) {

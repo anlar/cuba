@@ -17,6 +17,7 @@
 package com.haulmont.cuba.web.gui.components;
 
 import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.gui.components.Field;
 import com.haulmont.cuba.gui.components.HBoxLayout;
 import com.haulmont.cuba.gui.components.ListEditor;
 import com.haulmont.cuba.gui.components.listeditor.ListEditorDelegate;
@@ -253,5 +254,15 @@ public class WebListEditor extends WebAbstractField<WebListEditor.CubaListEditor
     @Override
     public TimeZone getTimeZone() {
         return delegate.getTimeZone();
+    }
+
+    @Override
+    public void setValidator(Field.Validator validator){
+        delegate.setValidator(validator);
+    }
+
+    @Override
+    public Field.Validator getValidator(){
+        return delegate.getValidator();
     }
 }

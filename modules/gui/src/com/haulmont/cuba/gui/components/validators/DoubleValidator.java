@@ -19,64 +19,61 @@ package com.haulmont.cuba.gui.components.validators;
 import com.haulmont.chile.core.datatypes.Datatype;
 import com.haulmont.chile.core.datatypes.Datatypes;
 import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.UserSessionSource;
-import com.haulmont.cuba.gui.components.Field;
-import com.haulmont.cuba.gui.components.ValidationException;
 import org.dom4j.Element;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Objects;
 
-public class DoubleValidator implements Field.Validator {
-
-    protected String message;
-    protected String messagesPack;
-    protected String onlyPositive;
-    protected Messages messages = AppBeans.get(Messages.NAME);
+public class DoubleValidator extends NumberValidator {
 
     public DoubleValidator(Element element, String messagesPack) {
-        message = element.attributeValue("message");
-        onlyPositive = element.attributeValue("onlyPositive");
-        this.messagesPack = messagesPack;
+        super(element, messagesPack);
     }
 
     public DoubleValidator(String message) {
-        this.message = message;
+        super(message);
     }
 
     public DoubleValidator() {
-        this.message = messages.getMainMessage("validation.invalidNumber");
     }
 
-    private boolean checkDoubleOnPositive(Double value) {
-        return !Objects.equals("true", onlyPositive) || value >= 0;
-    }
-
-    private boolean checkBigDecimalOnPositive(BigDecimal value) {
-        return !Objects.equals("true", onlyPositive) || value.compareTo(BigDecimal.ZERO) >= 0;
+    public DoubleValidator(Double min, Double max) {
+        super(min, max);
     }
 
     @Override
-    public void validate(Object value) throws ValidationException {
-        boolean result;
-        if (value instanceof String) {
+    protected Number parse(Object value) throws UnsupportedOperationException {
+        if (value instanceof Double || value instanceof BigDecimal) {
+            return (Number) value;
+        } else if (value instanceof String) {
             try {
                 Datatype<Double> datatype = Datatypes.getNN(Double.class);
                 UserSessionSource sessionSource = AppBeans.get(UserSessionSource.NAME);
-                Double num = datatype.parse((String) value, sessionSource.getLocale());
-                result = checkDoubleOnPositive(num);
+                return datatype.parse((String) value, sessionSource.getLocale());
             } catch (ParseException e) {
-                result = false;
+                throw new UnsupportedOperationException(e);
             }
         } else {
-            result = (value instanceof Double && checkDoubleOnPositive((Double) value)) || (value instanceof BigDecimal && checkBigDecimalOnPositive((BigDecimal) value));
+            throw new UnsupportedOperationException();
         }
+    }
 
-        if (!result) {
-            String msg = message != null ? messages.getTools().loadString(messagesPack, message) : "Invalid value '%s'";
-            throw new ValidationException(String.format(msg, value));
+    @Override
+    protected boolean checkOnPositive(Number value) {
+        if (value instanceof Double) {
+            return (Double) value >= 0;
+        } else {
+            return ((BigDecimal) value).compareTo(BigDecimal.ZERO) >= 0;
+        }
+    }
+
+    @Override
+    protected int compareNumbers(Number first, Number second) {
+        if (first instanceof Double) {
+            return Double.compare((Double) first, (Double) second);
+        } else {
+            return ((BigDecimal) first).compareTo((BigDecimal) second);
         }
     }
 }

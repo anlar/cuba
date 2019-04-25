@@ -23,6 +23,7 @@ import com.haulmont.bali.util.Preconditions;
 import com.haulmont.chile.core.model.MetaClass;
 import com.haulmont.cuba.core.app.dynamicattributes.DynamicAttributes;
 import com.haulmont.cuba.core.app.dynamicattributes.DynamicAttributesUtils;
+import com.haulmont.cuba.core.app.dynamicattributes.PropertyType;
 import com.haulmont.cuba.core.entity.BaseGenericIdEntity;
 import com.haulmont.cuba.core.entity.Categorized;
 import com.haulmont.cuba.core.entity.CategoryAttribute;
@@ -31,7 +32,10 @@ import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.WindowManager.OpenType;
 import com.haulmont.cuba.gui.WindowParams;
 import com.haulmont.cuba.gui.commonlookup.CommonLookupController;
+import com.haulmont.cuba.gui.components.Field;
 import com.haulmont.cuba.gui.components.PickerField;
+import com.haulmont.cuba.gui.components.validators.DoubleValidator;
+import com.haulmont.cuba.gui.components.validators.IntegerValidator;
 import com.haulmont.cuba.gui.config.WindowConfig;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -300,5 +304,15 @@ public class DynamicAttributesGuiTools {
         if (reloadedEntity != null) {
             entity.setDynamicAttributes(reloadedEntity.getDynamicAttributes());
         }
+    }
+
+    public Field.Validator createValidator(CategoryAttribute attribute) {
+        if (attribute.getDataType() == PropertyType.INTEGER) {
+            return new IntegerValidator(attribute.getMinInt(), attribute.getMaxInt());
+        } else if (attribute.getDataType() == PropertyType.DOUBLE) {
+            return new DoubleValidator(attribute.getMinDouble(), attribute.getMaxDouble());
+        }
+
+        return null;
     }
 }

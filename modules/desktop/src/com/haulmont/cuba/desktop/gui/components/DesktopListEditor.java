@@ -19,6 +19,7 @@ package com.haulmont.cuba.desktop.gui.components;
 import com.haulmont.chile.core.model.MetaProperty;
 import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.gui.components.Field;
 import com.haulmont.cuba.gui.components.ListEditor;
 import com.haulmont.cuba.gui.components.listeditor.ListEditorDelegate;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -256,5 +257,15 @@ public class DesktopListEditor extends DesktopAbstractField<JPanel> implements L
     @Override
     public TimeZone getTimeZone() {
         return delegate.getTimeZone();
+    }
+
+    @Override
+    public void setValidator(Field.Validator validator){
+        delegate.setValidator(validator);
+    }
+
+    @Override
+    public Field.Validator getValidator(){
+        return delegate.getValidator();
     }
 }

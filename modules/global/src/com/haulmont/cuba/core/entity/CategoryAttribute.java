@@ -112,6 +112,18 @@ public class CategoryAttribute extends StandardEntity {
     @Column(name = "DEFAULT_DATE_IS_CURRENT")
     private Boolean defaultDateIsCurrent;
 
+    @Column(name = "MIN_INT")
+    private Integer minInt;
+
+    @Column(name = "MIN_DOUBLE")
+    private Double minDouble;
+
+    @Column(name = "MAX_INT")
+    private Integer maxInt;
+
+    @Column(name = "MAX_DOUBLE")
+    private Double maxDouble;
+
     @Column(name = "WIDTH", length = 20)
     private String width;
 
@@ -244,6 +256,60 @@ public class CategoryAttribute extends StandardEntity {
                 case STRING: return defaultString;
                 case ENUMERATION: return defaultString;
                 case ENTITY: return getObjectDefaultEntityId();
+                default: return null;
+            }
+        }
+        return null;
+    }
+
+    public Integer getMinInt() {
+        return minInt;
+    }
+
+    public void setMinInt(Integer minInt) {
+        this.minInt = minInt;
+    }
+
+    public Double getMinDouble() {
+        return minDouble;
+    }
+
+    public void setMinDouble(Double minDouble) {
+        this.minDouble = minDouble;
+    }
+
+    public Integer getMaxInt() {
+        return maxInt;
+    }
+
+    public void setMaxInt(Integer maxInt) {
+        this.maxInt = maxInt;
+    }
+
+    public Double getMaxDouble() {
+        return maxDouble;
+    }
+
+    public void setMaxDouble(Double maxDouble) {
+        this.maxDouble = maxDouble;
+    }
+
+    public Number getMinValue() {
+        if (dataType != null) {
+            switch (PropertyType.fromId(dataType)) {
+                case INTEGER: return minInt;
+                case DOUBLE: return minDouble;
+                default: return null;
+            }
+        }
+        return null;
+    }
+
+    public Number getMaxValue() {
+        if (dataType != null) {
+            switch (PropertyType.fromId(dataType)) {
+                case INTEGER: return maxInt;
+                case DOUBLE: return maxDouble;
                 default: return null;
             }
         }
