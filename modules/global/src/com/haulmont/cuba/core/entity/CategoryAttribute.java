@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity(name = "sys$CategoryAttribute")
@@ -103,6 +104,9 @@ public class CategoryAttribute extends StandardEntity {
     @Column(name = "DEFAULT_DOUBLE")
     private Double defaultDouble;
 
+    @Column(name = "DEFAULT_DECIMAL", precision = 36, scale = 10)
+    private BigDecimal defaultDecimal;
+
     @Column(name = "DEFAULT_BOOLEAN")
     private Boolean defaultBoolean;
 
@@ -118,11 +122,17 @@ public class CategoryAttribute extends StandardEntity {
     @Column(name = "MIN_DOUBLE")
     private Double minDouble;
 
+    @Column(name = "MIN_DECIMAL", precision = 36, scale = 10)
+    private BigDecimal minDecimal;
+
     @Column(name = "MAX_INT")
     private Integer maxInt;
 
     @Column(name = "MAX_DOUBLE")
     private Double maxDouble;
+
+    @Column(name = "MAX_DECIMAL", precision = 36, scale = 10)
+    private BigDecimal maxDecimal;
 
     @Column(name = "WIDTH", length = 20)
     private String width;
@@ -230,6 +240,14 @@ public class CategoryAttribute extends StandardEntity {
         this.defaultDouble = defaultDouble;
     }
 
+    public BigDecimal getDefaultDecimal() {
+        return defaultDecimal;
+    }
+
+    public void setDefaultDecimal(BigDecimal defaultDecimal) {
+        this.defaultDecimal = defaultDecimal;
+    }
+
     public Boolean getDefaultBoolean() {
         return defaultBoolean;
     }
@@ -251,6 +269,7 @@ public class CategoryAttribute extends StandardEntity {
             switch (PropertyType.fromId(dataType)) {
                 case INTEGER: return defaultInt;
                 case DOUBLE: return defaultDouble;
+                case DECIMAL: return defaultDecimal;
                 case BOOLEAN: return defaultBoolean;
                 case DATE: return defaultDate;
                 case STRING: return defaultString;
@@ -278,6 +297,14 @@ public class CategoryAttribute extends StandardEntity {
         this.minDouble = minDouble;
     }
 
+    public BigDecimal getMinDecimal() {
+        return minDecimal;
+    }
+
+    public void setMinDecimal(BigDecimal minDecimal) {
+        this.minDecimal = minDecimal;
+    }
+
     public Integer getMaxInt() {
         return maxInt;
     }
@@ -294,11 +321,20 @@ public class CategoryAttribute extends StandardEntity {
         this.maxDouble = maxDouble;
     }
 
+    public BigDecimal getMaxDecimal() {
+        return maxDecimal;
+    }
+
+    public void setMaxDecimal(BigDecimal maxDecimal) {
+        this.maxDecimal = maxDecimal;
+    }
+
     public Number getMinValue() {
         if (dataType != null) {
             switch (PropertyType.fromId(dataType)) {
                 case INTEGER: return minInt;
                 case DOUBLE: return minDouble;
+                case DECIMAL: return minDecimal;
                 default: return null;
             }
         }
@@ -310,6 +346,7 @@ public class CategoryAttribute extends StandardEntity {
             switch (PropertyType.fromId(dataType)) {
                 case INTEGER: return maxInt;
                 case DOUBLE: return maxDouble;
+                case DECIMAL: return maxDecimal;
                 default: return null;
             }
         }

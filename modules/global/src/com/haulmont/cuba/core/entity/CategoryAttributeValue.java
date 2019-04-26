@@ -24,6 +24,7 @@ import com.haulmont.cuba.core.global.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,9 @@ public class CategoryAttributeValue extends StandardEntity {
 
     @Column(name = "DOUBLE_VALUE")
     private Double doubleValue;
+
+    @Column(name = "DECIMAL_VALUE", precision = 36, scale = 10)
+    private BigDecimal decimalValue;
 
     @Column(name = "BOOLEAN_VALUE")
     private Boolean booleanValue;
@@ -132,6 +136,14 @@ public class CategoryAttributeValue extends StandardEntity {
         this.doubleValue = doubleValue;
     }
 
+    public BigDecimal getDecimalValue() {
+        return decimalValue;
+    }
+
+    public void setDecimalValue(BigDecimal decimalValue) {
+        this.decimalValue = decimalValue;
+    }
+
     public Boolean getBooleanValue() {
         return booleanValue;
     }
@@ -202,6 +214,7 @@ public class CategoryAttributeValue extends StandardEntity {
             stringValue = null;
             intValue = null;
             doubleValue = null;
+            decimalValue = null;
             booleanValue = null;
             dateValue = null;
             entityValue.setObjectEntityId(null);
@@ -213,6 +226,8 @@ public class CategoryAttributeValue extends StandardEntity {
             setIntValue((Integer) value);
         } else if (value instanceof Double) {
             setDoubleValue((Double) value);
+        } else if (value instanceof BigDecimal) {
+            setDecimalValue((BigDecimal) value);
         } else if (value instanceof Boolean) {
             setBooleanValue((Boolean) value);
         } else if (value instanceof BaseGenericIdEntity) {
@@ -236,6 +251,8 @@ public class CategoryAttributeValue extends StandardEntity {
             return intValue;
         } else if (doubleValue != null) {
             return doubleValue;
+        } else if (decimalValue != null) {
+            return decimalValue;
         } else if (dateValue != null) {
             return dateValue;
         } else if (booleanValue != null) {

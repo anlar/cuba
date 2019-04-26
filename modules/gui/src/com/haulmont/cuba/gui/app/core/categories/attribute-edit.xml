@@ -62,14 +62,17 @@
                         <field id="defaultString" width="100%"/>
                         <field id="defaultInt" width="100%"/>
                         <field id="defaultDouble" width="100%"/>
+                        <field id="defaultDecimal" width="100%"/>
                         <field id="defaultBoolean" custom="true" width="100%"/>
                         <field id="defaultDate" width="100%"/>
                         <field id="defaultDateIsCurrent" width="100%"/>
 
                         <field id="minInt" width="100%"/>
                         <field id="minDouble" width="100%"/>
+                        <field id="minDecimal" width="100%"/>
                         <field id="maxInt" width="100%"/>
                         <field id="maxDouble" width="100%"/>
+                        <field id="maxDecimal" width="100%"/>
                     </column>
                 </fieldGroup>
             </tab>

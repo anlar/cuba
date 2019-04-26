@@ -85,6 +85,11 @@ public class AttributeEditor extends AbstractEditor<CategoryAttribute> {
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "maxDouble");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "width");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DOUBLE, "isCollection");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DECIMAL, "defaultDecimal");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DECIMAL, "minDecimal");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DECIMAL, "maxDecimal");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DECIMAL, "width");
+        FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.DECIMAL, "isCollection");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "defaultInt");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "minInt");
         FIELDS_VISIBLE_FOR_DATATYPES.put(PropertyType.INTEGER, "maxInt");

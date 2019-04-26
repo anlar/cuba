@@ -108,6 +108,8 @@ public class DynamicAttributeCustomFieldGenerator implements FieldGroup.CustomFi
                 return ListEditor.ItemType.DATETIME;
             case DOUBLE:
                 return ListEditor.ItemType.DOUBLE;
+            case DECIMAL:
+                return ListEditor.ItemType.BIGDECIMAL;
             case INTEGER:
                 return ListEditor.ItemType.INTEGER;
             case STRING:
