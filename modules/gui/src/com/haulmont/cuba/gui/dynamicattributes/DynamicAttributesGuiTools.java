@@ -311,6 +311,8 @@ public class DynamicAttributesGuiTools {
             return new IntegerValidator(attribute.getMinInt(), attribute.getMaxInt());
         } else if (attribute.getDataType() == PropertyType.DOUBLE) {
             return new DoubleValidator(attribute.getMinDouble(), attribute.getMaxDouble());
+        } else if (attribute.getDataType() == PropertyType.DECIMAL) {
+            return new DoubleValidator(attribute.getMinDecimal(), attribute.getMaxDecimal());
         }
 
         return null;

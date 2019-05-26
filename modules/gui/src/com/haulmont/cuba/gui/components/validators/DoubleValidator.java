@@ -38,7 +38,7 @@ public class DoubleValidator extends NumberValidator {
     public DoubleValidator() {
     }
 
-    public DoubleValidator(Double min, Double max) {
+    public DoubleValidator(Number min, Number max) {
         super(min, max);
     }
 

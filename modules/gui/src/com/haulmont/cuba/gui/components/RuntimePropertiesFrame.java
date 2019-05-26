@@ -271,7 +271,9 @@ public class RuntimePropertiesFrame extends AbstractFrame {
                         ((DynamicAttributesMetaProperty) property).getAttribute().getMaxDouble());
 
             } else if (type.equals(BigDecimal.class)) {
-                validator = new DoubleValidator(messages.getMainMessage("validation.invalidNumber"));
+                validator = new DoubleValidator(
+                        ((DynamicAttributesMetaProperty) property).getAttribute().getMinDecimal(),
+                        ((DynamicAttributesMetaProperty) property).getAttribute().getMaxDecimal());
 
             } else if (type.equals(java.sql.Date.class)) {
                 validator = new DateValidator(messages.getMainMessage("validation.invalidDate"));
