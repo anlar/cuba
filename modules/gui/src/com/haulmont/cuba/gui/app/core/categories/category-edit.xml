@@ -23,8 +23,8 @@
 
     <dsContext>
         <datasource id="categoryDs" class="com.haulmont.cuba.core.entity.Category" view="category.edit">
-            <collectionDatasource id="categoryAttrsDs" property="categoryAttrs">
-            </collectionDatasource>
+            <collectionDatasource id="categoryAttrsDs" property="categoryAttrs"/>
+            <collectionDatasource id="categoryColumnsDs" property="categoryColumns"/>
         </datasource>
     </dsContext>
 
@@ -34,7 +34,7 @@
                 width="theme://cuba.gui.dialogSize.width.xlarge"
                 resizable="true"/>
 
-    <layout expand="categoryAttrsFrame" spacing="true">
+    <layout expand="categoryDetails" spacing="true">
         <hbox id="categoryProperties" spacing="true">
             <label value="msg://com.haulmont.cuba.core.entity/Category.name" align="MIDDLE_LEFT"/>
             <textField width="${fieldWidth}" id="name" datasource="categoryDs" property="name" required="true"
@@ -45,9 +45,17 @@
             <checkBox id="isDefault" caption="msg://isDefault" align="MIDDLE_LEFT"/>
         </hbox>
         <groupBox id="localizedGroupBox" width="450px" collapsable="true" collapsed="true" caption="msg://localeGroupBox.caption" visible="false"/>
-        <label value="msg://attributes" stylename="h2"/>
 
-        <frame id="categoryAttrsFrame" src="/com/haulmont/cuba/gui/app/core/categories/category-attrs-frame.xml"/>
+        <hbox id="categoryDetails" width="100%" spacing="true">
+            <vbox height="100%" expand="categoryAttrsFrame" spacing="true">
+                <label value="msg://attributes" stylename="h2"/>
+                <frame id="categoryAttrsFrame" src="/com/haulmont/cuba/gui/app/core/categories/category-attrs-frame.xml"/>
+            </vbox>
+            <vbox height="100%" expand="categoryColumnsFrame" spacing="true">
+                <label value="Table columns" stylename="h2"/>
+                <frame id="categoryColumnsFrame" src="/com/haulmont/cuba/gui/app/core/categories/category-columns-frame.xml"/>
+            </vbox>
+        </hbox>
 
         <frame id="windowActions" screen="editWindowActions"/>
     </layout>

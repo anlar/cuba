@@ -52,6 +52,12 @@ public class Category extends StandardEntity {
     @Composition
     protected List<CategoryAttribute> categoryAttrs;
 
+    @OneToMany(mappedBy = "category", targetEntity = CategoryAttributeColumn.class)
+    @OnDelete(com.haulmont.cuba.core.global.DeletePolicy.CASCADE)
+    @OrderBy("orderNo")
+    @Composition
+    protected List<CategoryAttributeColumn> categoryColumns;
+
     @Column(name = "LOCALE_NAMES")
     protected String localeNames;
 
@@ -76,6 +82,14 @@ public class Category extends StandardEntity {
 
     public void setCategoryAttrs(List<CategoryAttribute> categoryAttrs) {
         this.categoryAttrs = categoryAttrs;
+    }
+
+    public List<CategoryAttributeColumn> getCategoryColumns() {
+        return categoryColumns;
+    }
+
+    public void setCategoryColumns(List<CategoryAttributeColumn> categoryColumns) {
+        this.categoryColumns = categoryColumns;
     }
 
     public String getEntityType() {

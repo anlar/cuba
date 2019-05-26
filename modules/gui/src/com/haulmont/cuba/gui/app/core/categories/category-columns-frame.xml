@@ -1,0 +1,47 @@
+<!--
+  ~ Copyright (c) 2008-2019 Haulmont.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="com.haulmont.cuba.gui.app.core.categories.CategoryColumnsFrame"
+        messagesPack="com.haulmont.cuba.gui.app.core.categories">
+
+    <layout height="100%" spacing="true">
+        <table id="categoryColumnsTable" presentations="true" width="100%" height="100%">
+            <actions>
+                <action id="create" openType="DIALOG"/>
+                <action id="edit" openType="DIALOG"/>
+                <action id="remove"/>
+            </actions>
+            <buttonsPanel>
+                <button id="createBtn" action="categoryColumnsTable.create"/>
+                <button id="editBtn" action="categoryColumnsTable.edit"/>
+                <button id="removeBtn" action="categoryColumnsTable.remove"/>
+<!--                <button action="categoryColumnsTable.create" icon="icons/create.png" caption="msg://categoryAttrsTable.create"/>-->
+<!--                <button action="categoryColumnsTable.edit" icon="icons/edit.png" caption="msg://categoryAttrsTable.edit"/>-->
+<!--                <button action="categoryColumnsTable.remove" icon="icons/remove.png" caption="msg://categoryAttrsTable.remove"/>-->
+<!--                <button id="moveUp" icon="icons/up.png"/>-->
+<!--                <button id="moveDown" icon="icons/down.png"/>-->
+            </buttonsPanel>
+            <columns>
+                <column id="name"/>
+                <column id="code"/>
+                <column id="format"/>
+                <column id="width"/>
+            </columns>
+            <rows datasource="categoryColumnsDs"/>
+        </table>
+    </layout>
+</window>

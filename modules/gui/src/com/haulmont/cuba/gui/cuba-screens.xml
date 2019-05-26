@@ -117,6 +117,9 @@
     <screen id="sys$CategoryAttribute.edit"
             template="/com/haulmont/cuba/gui/app/core/categories/attribute-edit.xml"/>
 
+    <screen id="sys$CategoryAttributeColumn.edit"
+            template="/com/haulmont/cuba/gui/app/core/categories/attribute-column-edit.xml"/>
+
     <screen id="sys$EntitySnapshot.view"
             template="/com/haulmont/cuba/gui/app/core/entitydiff/diff-view.xml"/>
 

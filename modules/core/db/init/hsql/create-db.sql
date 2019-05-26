@@ -756,6 +756,31 @@ create unique index IDX_CAT_ATTR_ENT_TYPE_AND_CODE on SYS_CATEGORY_ATTR (CATEGOR
 
 alter table SYS_CATEGORY_ATTR add constraint SYS_CATEGORY_ATTR_CATEGORY_ID foreign key (CATEGORY_ID) references SYS_CATEGORY(ID)^
 
+create table SYS_CATEGORY_COLUMN(
+    ID varchar(36) not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    VERSION integer,
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255),
+    CODE varchar(50) not null,
+    CATEGORY_ID varchar(36) not null,
+    FORMAT varchar(500),
+    WIDTH varchar(20),
+
+    ORDER_NO integer,
+    --
+    primary key (ID)
+)^
+
+create unique index IDX_CAT_COLUMN_CODE on SYS_CATEGORY_COLUMN (CODE);
+
+alter table SYS_CATEGORY_COLUMN add constraint SYS_CATEGORY_COLUMN_CATEGORY_ID foreign key (CATEGORY_ID) references SYS_CATEGORY(ID)^
+
 create table SYS_ATTR_VALUE (
     ID varchar(36) not null,
     CREATE_TS timestamp,
